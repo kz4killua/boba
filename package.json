@@ -11,7 +11,11 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/moo": "^0.5.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "moo": "^0.5.2"
   }
 }
