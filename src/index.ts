@@ -2,12 +2,13 @@ import { lexer } from "./compiler/lexer";
 
 
 const input = (`
-# This is a comment
+if foo
+  if bar
+    baz
+else
+  baz
 `);
 
-lexer.reset(input);
-
-let token;
-while ((token = lexer.next()) !== undefined) {
+for (const token of lexer.tokens(input)) {
   console.log(token);
 }
