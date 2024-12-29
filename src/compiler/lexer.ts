@@ -1,20 +1,8 @@
-import moo from 'moo';
+const moo = require('moo');
 
 
 const base = moo.compile({
-  // Comments, keywords, and identifiers
   COMMENT: /#.*?$/,
-  KEYWORD: ['set', 'to', 'if', 'else', 'repeat', 'until', 'times'],
-  IDENTIFIER: /[a-zA-Z_][a-zA-Z0-9_]*/,
-
-  // Whitespace, newlines
-  WS: /[ \t]+/,
-  NL: { match: /\n/, lineBreaks: true },
-
-  // Data types
-  TEXT: /"(?:\\["\\]|[^\n"\\])*"/,
-  NUMBER: /0|-?[1-9][0-9]*(?:\.[0-9]*)?/,
-  BOOLEAN: ['true', 'false'],
 
   // Arithmetic operators
   PLUS: '+',
@@ -37,6 +25,19 @@ const base = moo.compile({
   // Punctuation
   LPAREN: '(',
   RPAREN: ')',
+
+  KEYWORD: ['set', 'to', 'if', 'else', 'repeat', 'until', 'times'],
+
+  // Native data types
+  TEXT: /"(?:\\["\\]|[^\n"\\])*"/,
+  NUMBER: /0|-?[1-9][0-9]*(?:\.[0-9]*)?/,
+  BOOLEAN: ['true', 'false'],
+
+  IDENTIFIER: /[a-zA-Z_][a-zA-Z0-9_]*/,
+
+  // Whitespace, newlines
+  WS: /[ \t]+/,
+  NL: { match: /\n/, lineBreaks: true },
 })
 
 
@@ -105,7 +106,6 @@ class Lexer {
     if (this.indents.length > 0 && this.indents[this.indents.length - 1] >= level) {
       return;
     }
-
     this.indents.push(level);
     yield { type: 'INDENT' };
   }
@@ -114,7 +114,6 @@ class Lexer {
     if (level !== 0 && this.indents.length > 0 && !this.indents.includes(level)) {
       throw new Error('Indentation error: Please use consistent indentation.');
     }
-    
     while (level < this.indents[this.indents.length - 1] && this.indents.length > 0) {
       this.indents.pop();
       yield { type: 'DEDENT' };
