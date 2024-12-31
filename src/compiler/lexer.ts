@@ -12,10 +12,10 @@ const base = moo.compile({
 
   // Comparison operators
   EQ: '=',
-  LT: '<',
-  GT: '>',
   LTE: '<=',
   GTE: '>=',
+  LT: '<',
+  GT: '>',
 
   // Logical operators
   AND: /\band\b/,
