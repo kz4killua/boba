@@ -18,7 +18,7 @@ main ->
 # ==========
 
 statements -> 
-      statements %NL statement                              {% (d) => d[0].concat([d[1]]) %}
+      statements %NL statement                              {% (d) => d[0].concat([d[2]]) %}
     | statement                                             {% (d) => [d[0]] %}
 
 statement -> 
