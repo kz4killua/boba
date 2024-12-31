@@ -74,7 +74,7 @@ export function repeatForever(body: any[]) {
 }
 
 export function repeatUntil(test: any, body: any[]) {
-  return whileStatement(test, body);
+  return whileStatement(unaryExpression('not', test), body);
 }
 
 export function repeatTimes(times: any, body: any[]) {
