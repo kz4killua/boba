@@ -18,20 +18,20 @@ const base = moo.compile({
   GTE: '>=',
 
   // Logical operators
-  AND: 'and',
-  OR: 'or',
-  NOT: 'not',
+  AND: /\band\b/,
+  OR: /\bor\b/,
+  NOT: /\bnot\b/,
 
   // Punctuation
   LPAREN: '(',
   RPAREN: ')',
 
-  KEYWORD: ['set', 'to', 'if', 'else', 'repeat', 'until', 'times'],
+  KEYWORD: [/\bset\b/, /\bto\b/, /\bif\b/, /\belse\b/, /\brepeat\b/, /\buntil\b/, /\btimes\b/],
 
   // Native data types
   TEXT: /"(?:\\["\\]|[^\n"\\])*"/,
   NUMBER: /0|-?[1-9][0-9]*(?:\.[0-9]*)?/,
-  BOOLEAN: ['true', 'false'],
+  BOOLEAN: [/\btrue\b/, /\bfalse\b/],
 
   IDENTIFIER: /[a-zA-Z_][a-zA-Z0-9_]*/,
 
