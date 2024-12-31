@@ -22,6 +22,7 @@ statements ->
 statement -> 
       assignment
     | conditional
+    | loop
     | expression
 
     | statement %NL
@@ -48,6 +49,14 @@ elif_block ->
 
 else_block ->
       "else" block
+
+# Loops
+# -----
+
+loop -> 
+      "repeat" block
+    | "repeat" "until" expression block
+    | "repeat" expression "times" block
 
 # Blocks
 # ------

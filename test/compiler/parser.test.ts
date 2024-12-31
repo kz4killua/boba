@@ -164,4 +164,53 @@ describe('Parser', () => {
 
   });
 
+  test('Valid loop statements', () => {
+
+    let input: string;
+
+    input = (
+      'repeat\n' +
+      '    set complete to true\n'
+    );
+    parser.feed(input);
+    expect(parser.results.length).toEqual(1);
+    parser.reset();
+
+    input = (
+      'repeat until i > 0 or i < 0\n' +
+      '    set complete to true\n'
+    );
+    parser.feed(input);
+    expect(parser.results.length).toEqual(1);
+    parser.reset();
+
+    input = (
+      'repeat 50 times\n' +
+      '    set complete to true\n'
+    );
+    parser.feed(input);
+    expect(parser.results.length).toEqual(1);
+    parser.reset();
+
+  });
+
+  test('Invalid loop statements', () => {
+
+    let input: string;
+
+    input = (
+      'repeat set complete to true\n'
+    );
+    expect(() => parser.feed(input)).toThrow();
+    parser.reset();
+
+    input = (
+      'repeat until until i > 0\n' +
+      '    set complete to true\n'
+    );
+    expect(() => parser.feed(input)).toThrow();
+    parser.reset();
+
+  });
+
 });
