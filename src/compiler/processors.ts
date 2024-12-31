@@ -78,10 +78,10 @@ export function repeatUntil(test: any, body: any[]) {
 }
 
 export function repeatTimes(times: any, body: any[]) {
-  const i = identifier('i');
-  const init = assignment(i, literal('NUMBER', '0'));
-  const test = binaryExpression('<', i, times);
-  const update = updateExpression('++', i, false);
+  const _identifier = identifier('_');
+  const init = assignment(_identifier, literal('NUMBER', '0'));
+  const test = binaryExpression('<', _identifier, times);
+  const update = updateExpression('++', _identifier, false);
   return forStatement(init, test, update, body);
 }
 
