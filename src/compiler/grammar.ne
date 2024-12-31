@@ -7,18 +7,53 @@ const lexer = require('./lexer');
 @lexer lexer
 
 
+# STARTING RULES
+# ==============
+
+main -> 
+      statements
+
 # STATEMENTS
 # ==========
 
+statements -> 
+      statement ( %NL statement ):*
+
 statement -> 
       assignment
+    | conditional
     | expression
 
-# Assignment
-# ----------
+    | statement %NL
+    | %NL statement
+    | %NL
+
+# Assignment statements
+# ---------------------
 
 assignment -> 
       "set" %IDENTIFIER "to" expression
+
+# if statements
+# -------------
+
+conditional -> 
+      if_block ( elif_block ):* ( else_block ):?
+
+if_block -> 
+      "if" expression block
+
+elif_block -> 
+      "else" "if" expression block
+
+else_block ->
+      "else" block
+
+# Blocks
+# ------
+
+block -> 
+      %NL %INDENT statements %DEDENT
 
 # EXPRESSIONS
 # ===========

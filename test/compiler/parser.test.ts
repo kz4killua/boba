@@ -82,4 +82,86 @@ describe('Parser', () => {
 
   });
 
+  test('Valid if statements', () => {
+
+    let input: string;
+
+    input = (
+      'if i > 0\n' +
+      '    set complete to true\n' +
+      '    set complete to true\n'
+    );
+    parser.feed(input);
+    expect(parser.results.length).toEqual(1);
+    parser.reset();
+
+    input = (
+      'if i > 0\n' +
+      '    set complete to true\n' +
+      'else\n' +
+      '    set complete to true\n'
+    );
+    parser.feed(input);
+    expect(parser.results.length).toEqual(1);
+    parser.reset();
+
+    input = (
+      'if i = 0\n' +
+      '    set complete to true\n' +
+      'else if i = 0\n' +
+      '    set complete to true\n' +
+      'else if i = 0\n' +
+      '    set complete to true\n'
+    );
+    parser.feed(input);
+    expect(parser.results.length).toEqual(1);
+    parser.reset();
+
+    input = (
+      'if 1 > 0\n' +
+      '    set complete to true\n' +
+      'else if 1 < 0\n' +
+      '    set complete to true\n' +
+      'else\n' +
+      '    set complete to true\n'
+    );
+    parser.feed(input);
+    expect(parser.results.length).toEqual(1);
+    parser.reset();
+
+  });
+
+  test('Invalid if statements', () => {
+
+    let input: string;
+
+    input = (
+      'else if 1 > 0\n' +
+      '    set complete to true\n'
+    );
+    expect(() => parser.feed(input)).toThrow();
+    parser.reset();
+
+    input = (
+      'else\n' +
+      '    set complete to true\n'
+    );
+    expect(() => parser.feed(input)).toThrow();
+    parser.reset();
+
+    input = (
+      'if 1 > 0\n' +
+      '    set complete to true\n' +
+      'else if 1 < 0\n' +
+      '    set complete to false\n' +
+      'else\n' +
+      '    set complete to settled\n' +
+      'else\n' +
+      '    set complete to settled'
+    );
+    expect(() => parser.feed(input)).toThrow();
+    parser.reset();
+
+  });
+
 });
