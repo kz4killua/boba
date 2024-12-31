@@ -110,7 +110,7 @@ function getLiteralValue(type: string, value: any) {
   } else if (type === 'BOOLEAN') {
     return value === 'true';
   } else if (type === 'TEXT') {
-    return value;
+    return value.slice(1, -1);
   } else {
     throw new Error(`Unknown literal type: ${type}`);
   }
