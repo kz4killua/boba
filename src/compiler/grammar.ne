@@ -7,6 +7,19 @@ const lexer = require('./lexer');
 @lexer lexer
 
 
+# STATEMENTS
+# ==========
+
+statement -> 
+      assignment
+    | expression
+
+# Assignment
+# ----------
+
+assignment -> 
+      "set" %IDENTIFIER "to" expression
+
 # EXPRESSIONS
 # ===========
 
