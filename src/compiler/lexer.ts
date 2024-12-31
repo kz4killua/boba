@@ -46,18 +46,40 @@ class Lexer {
   lexer: moo.Lexer;
   atbol: boolean;
   indents: number[];
+  tokens: Generator<moo.Token | { type: string }>;
 
   constructor() {
     this.lexer = base;
     this.indents = [];
     this.atbol = false;
+    this.tokens = this.tokenize();
   }
 
-  *tokens(input: string): Generator<moo.Token | { type: string } | undefined> {
-
-    this.lexer.reset(input);
+  reset(chunk?: string, state?: moo.LexerState) : moo.Lexer {
+    this.lexer.reset(chunk, state);
     this.indents = [];
     this.atbol = false;
+    this.tokens = this.tokenize();
+    return this.lexer;
+  }
+
+  next() : moo.Token | undefined {
+    return this.tokens.next().value;
+  }
+
+  save(): moo.LexerState {
+    return this.lexer.save();
+  }
+
+  formatError(token: moo.Token, message?: string): string {
+    return this.lexer.formatError(token, message);
+  }
+
+  has(tokenType: string): boolean {
+    return this.lexer.has(tokenType);
+  }
+
+  *tokenize(): Generator<moo.Token | { type: string }> {
 
     while (true) {
       const token = this.lexer.next();
@@ -65,13 +87,10 @@ class Lexer {
         break;
       }
 
-      // Create INDENT and DEDENT tokens when appropriate
       if (this.atbol) {
         yield* this.updateIndentation(token);
-        if (token.type !== 'WS') {
-          yield token;
-        }
-      } else {
+      }
+      if ((token.type !== 'WS') && (token.type !== 'COMMENT')) {
         yield token;
       }
 
@@ -107,7 +126,7 @@ class Lexer {
       return;
     }
     this.indents.push(level);
-    yield { type: 'INDENT' };
+    yield { type: 'INDENT', value: '' };
   }
 
   *dedent(level: number) {
@@ -116,10 +135,10 @@ class Lexer {
     }
     while (level < this.indents[this.indents.length - 1] && this.indents.length > 0) {
       this.indents.pop();
-      yield { type: 'DEDENT' };
+      yield { type: 'DEDENT', value: '' };
     }
   }
 }
 
 
-export const lexer = new Lexer();
+export default new Lexer();
