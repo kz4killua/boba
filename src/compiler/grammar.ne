@@ -24,6 +24,7 @@ statement ->
     | conditional
     | loop
     | expression
+    | output
 
     | statement %NL
     | %NL statement
@@ -34,6 +35,12 @@ statement ->
 
 assignment -> 
       "set" %IDENTIFIER "to" expression
+
+# Output statements
+# -----------------
+
+output -> 
+      "output" expression ( %COMMA expression ):*
 
 # if statements
 # -------------

@@ -213,4 +213,44 @@ describe('Parser', () => {
 
   });
 
+
+  test('Valid output statements', () => {
+
+    let input: string;
+
+    input = 'output "Hello, World!"\n';
+    parser.feed(input);
+    expect(parser.results.length).toEqual(1);
+    parser.reset();
+
+    input = 'output "Hello,", name\n';
+    parser.feed(input);
+    expect(parser.results.length).toEqual(1);
+    parser.reset();
+
+    input = 'output true\n';
+    parser.feed(input);
+    expect(parser.results.length).toEqual(1);
+    parser.reset();
+
+  });
+
+  test('Invalid output statements', () => {
+
+    let input: string;
+
+    input = 'output\n';
+    expect(() => parser.feed(input)).toThrow();
+    parser.reset();
+
+    input = 'output 1 1\n';
+    expect(() => parser.feed(input)).toThrow();
+    parser.reset();
+
+    input = 'output "Hello, World!" name\n';
+    expect(() => parser.feed(input)).toThrow();
+    parser.reset();
+
+  });
+
 });

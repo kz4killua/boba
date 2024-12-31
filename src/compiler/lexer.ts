@@ -25,8 +25,9 @@ const base = moo.compile({
   // Punctuation
   LPAREN: '(',
   RPAREN: ')',
+  COMMA: ',',
 
-  KEYWORD: [/\bset\b/, /\bto\b/, /\bif\b/, /\belse\b/, /\brepeat\b/, /\buntil\b/, /\btimes\b/],
+  KEYWORD: [/\bset\b/, /\bto\b/, /\bif\b/, /\belse\b/, /\brepeat\b/, /\buntil\b/, /\btimes\b/, /\boutput\b/],
 
   // Native data types
   TEXT: /"(?:\\["\\]|[^\n"\\])*"/,
