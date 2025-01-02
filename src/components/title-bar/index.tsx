@@ -1,7 +1,11 @@
+import { Logo } from "@/components/ui/logo";
+
+
 export function TitleBar() {
   return (
-    <div className="title-bar">
-      <h1>My App</h1>
-    </div>
+    <header className="bg-background flex flex-row items-center p-3 gap-3 font-medium">
+      <Logo size={20} /> 
+      Boba
+    </header>
   );
 }
