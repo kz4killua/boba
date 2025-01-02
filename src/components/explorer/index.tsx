@@ -30,7 +30,7 @@ function NewFileButton() {
             <FilePlusIcon />
           </Button>
         </TooltipTrigger>
-        <TooltipContent side="bottom" className="bg-background text-foreground rounded border">
+        <TooltipContent side="bottom">
           <p>New File...</p>
         </TooltipContent>
       </Tooltip>
