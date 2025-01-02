@@ -1,6 +1,6 @@
 export default function Page() {
   return (
-    <div>
+    <div className="font-bold">
       Hello, world!
     </div>
   )
