@@ -3,8 +3,8 @@ import type { Notebook } from "@/types";
 
 export type NotebooksAction =
   | { type: 'CREATE_NOTEBOOK', notebook: Notebook }
-  | { type: 'DELETE_NOTEBOOK', notebook: Notebook }
-  | { type: 'UPDATE_NOTEBOOK', notebook: Notebook }
+  | { type: 'DELETE_NOTEBOOK', name: Notebook["name"] }
+  | { type: 'UPDATE_NOTEBOOK', name: Notebook["name"], notebook: Notebook }
   | { type: 'LOAD_NOTEBOOKS', notebooks: Notebook[] }
 
 
@@ -22,16 +22,17 @@ export const notebooksReducer = (state: NotebooksState, action: NotebooksAction)
     case 'DELETE_NOTEBOOK':
       return {
         ...state,
-        notebooks: state.notebooks.filter(notebook => notebook !== action.notebook)
+        notebooks: state.notebooks.filter(notebook => notebook.name !== action.name)
       }
     case 'UPDATE_NOTEBOOK':
       return {
         ...state,
         notebooks: state.notebooks.map(notebook => {
-          if (notebook === action.notebook) {
+          if (notebook.name === action.name) {
             return action.notebook;
+          } else {
+            return notebook;
           }
-          return notebook;
         })
       }
     case 'LOAD_NOTEBOOKS':
