@@ -2,7 +2,7 @@
 
 import { Logo } from "@/components/ui/logo";
 import { Button } from "@/components/ui/button";
-import { useExplorer } from "@/components/explorer/providers";
+import { useExplorer } from "@/providers/explorer-provider";
 import { PanelLeftIcon, PanelLeftCloseIcon } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 

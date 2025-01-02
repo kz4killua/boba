@@ -1,7 +1,7 @@
 "use client";
 
 import { Explorer } from "@/components/explorer";
-import { useExplorer } from "@/components/explorer/providers";
+import { useExplorer } from "@/providers/explorer-provider";
 import { TitleBar } from "@/components/title-bar";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
 
@@ -12,10 +12,10 @@ export default function Page() {
   return (
     <main className="flex flex-col h-screen w-screen divide-y">
       <TitleBar />
-      <ResizablePanelGroup direction="horizontal" className="grow">
+      <ResizablePanelGroup direction="horizontal" className="flex grow">
         {
           open && (<>
-            <ResizablePanel defaultSize={25}>
+            <ResizablePanel className="flex grow" defaultSize={25}>
               <Explorer />
             </ResizablePanel>
             <ResizableHandle />
