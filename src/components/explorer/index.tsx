@@ -15,7 +15,7 @@ import clsx from "clsx";
 export function Explorer() {
   const [creating, setCreating] = useState(false);
   return (
-    <div className="flex flex-col grow text-sm">
+    <div className="flex flex-col grow text-sm py-1">
       <div className="p-3 text-muted-foreground flex justify-between items-center">
         <span>Explorer</span>
         <NewFileButton onClick={() => setCreating(true)} />
@@ -117,16 +117,25 @@ function File({
   notebook: Notebook
 }) {
 
-  const { dispatch } = useNotebooks();
+  const { dispatch, active } = useNotebooks();
   const [selected, setSelected] = useState(false);
   const [renaming, setRenaming] = useState(false);
 
-  function handleDelete() {
+  function handleDelete(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    e.stopPropagation();
     dispatch({ type: 'DELETE_NOTEBOOK', name: notebook.name });
   }
 
-  function handleRename() {
+  function handleRename(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    e.stopPropagation();
     setRenaming(true);
+  }
+
+  function handleOpen() {
+    dispatch({ type: 'OPEN_NOTEBOOK', name: notebook.name });
+    if (active !== notebook.name) {
+      dispatch({ type: 'SET_ACTIVE_NOTEBOOK', name: notebook.name });
+    }
   }
 
   function onRenameSuccess(name: string) {
@@ -145,6 +154,7 @@ function File({
         "group px-3 py-2 flex justify-between items-center hover:bg-muted cursor-pointer",
         (selected || renaming) ? "bg-muted" : ""
       )}
+      onClick={handleOpen}
     >
       <div className="flex items-center gap-2">
         <FileCodeIcon size={16} className="shrink-0" /> 
@@ -164,10 +174,14 @@ function File({
       {/* NOTE: Setting modal={false} prevents Radix from stealing focus from FileNameInput */}
       <DropdownMenu onOpenChange={(open) => setSelected(open)} modal={false}>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className={clsx(
+          <Button 
+            variant="ghost" 
+            className={clsx(
             "invisible group-hover:visible size-4 p-1", 
             (selected || renaming) ? "visible" : ""
-          )}>
+            )}
+            onClick={(e) => e.stopPropagation()}
+          >
             <EllipsisIcon />
           </Button>
         </DropdownMenuTrigger>

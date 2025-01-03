@@ -24,7 +24,9 @@ export const NotebooksProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [state, dispatch] = useReducer(notebooksReducer, { notebooks: [] });
+  const [state, dispatch] = useReducer(notebooksReducer, { 
+    notebooks: [],  open: [], active: null
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

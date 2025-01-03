@@ -4,6 +4,7 @@ import { Explorer } from "@/components/explorer";
 import { useExplorer } from "@/providers/explorer-provider";
 import { TitleBar } from "@/components/title-bar";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
+import { EditorTabs } from "@/components/editor-tabs";
 
 export default function Page() {
 
@@ -22,7 +23,8 @@ export default function Page() {
           </>)
         }
         <ResizablePanel defaultSize={75}>
-
+          <EditorTabs />
+          
         </ResizablePanel>
       </ResizablePanelGroup>
     </main>
