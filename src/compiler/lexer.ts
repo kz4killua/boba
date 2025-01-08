@@ -1,21 +1,21 @@
 const moo = require('moo');
 
 
-const base = moo.compile({
+export const tokens = {
   COMMENT: /#.*?$/,
 
   // Arithmetic operators
-  PLUS: '+',
-  MINUS: '-',
-  TIMES: '*',
-  DIVIDE: '/',
+  PLUS: /\+/,
+  MINUS: /\-/,
+  TIMES: /\*/,
+  DIVIDE: /\//,
 
   // Comparison operators
-  EQ: '=',
-  LTE: '<=',
-  GTE: '>=',
-  LT: '<',
-  GT: '>',
+  EQ: /=/,
+  LTE: /<=/,
+  GTE: />=/,
+  LT: /</,
+  GT: />/,
 
   // Logical operators
   AND: /\band\b/,
@@ -23,11 +23,16 @@ const base = moo.compile({
   NOT: /\bnot\b/,
 
   // Punctuation
-  LPAREN: '(',
-  RPAREN: ')',
-  COMMA: ',',
+  LPAREN: /\(/,
+  RPAREN: /\)/,
+  COMMA: /,/,
 
-  KEYWORD: [/\bset\b/, /\bto\b/, /\bif\b/, /\belse\b/, /\brepeat\b/, /\buntil\b/, /\btimes\b/, /\boutput\b/],
+  KEYWORD: [
+    /\bset\b/, /\bto\b/, 
+    /\bif\b/, /\belse\b/, 
+    /\brepeat\b/, /\buntil\b/, /\btimes\b/, 
+    /\boutput\b/
+  ],
 
   // Native data types
   TEXT: /"(?:\\["\\]|[^\n"\\])*"/,
@@ -39,7 +44,7 @@ const base = moo.compile({
   // Whitespace, newlines
   WS: /[ \t]+/,
   NL: { match: /\n/, lineBreaks: true },
-})
+};
 
 
 class Lexer {
@@ -50,7 +55,7 @@ class Lexer {
   tokens: Generator<moo.Token | { type: string }>;
 
   constructor() {
-    this.lexer = base;
+    this.lexer = moo.compile(tokens);
     this.indents = [];
     this.atbol = false;
     this.tokens = this.tokenize();
