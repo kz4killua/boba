@@ -1,4 +1,4 @@
-import type { Notebook, CodeCell } from "@/types";
+import type { Notebook, CodeCell, NotebookCell } from "@/types";
 
 
 export type NotebooksAction =
@@ -10,6 +10,7 @@ export type NotebooksAction =
   | { type: 'CLOSE_NOTEBOOK', name: Notebook["name"] }
   | { type: 'SET_ACTIVE_NOTEBOOK', name: Notebook["name"] | null }
   | { type: 'CREATE_CODE_CELL', notebook: Notebook["name"], cell: CodeCell, index: number }
+  | { type: 'DELETE_CELL', notebook: Notebook["name"], id: NotebookCell["id"] }
 
 
 export type NotebooksState = {
@@ -77,6 +78,20 @@ export const notebooksReducer = (state: NotebooksState, action: NotebooksAction)
                 action.cell,
                 ...notebook.cells.slice(action.index)
               ]
+            }
+          } else {
+            return notebook;
+          }
+        })
+      }
+    case 'DELETE_CELL':
+      return {
+        ...state,
+        notebooks: state.notebooks.map(notebook => {
+          if (notebook.name === action.notebook) {
+            return {
+              ...notebook,
+              cells: notebook.cells.filter(cell => cell.id !== action.id)
             }
           } else {
             return notebook;
