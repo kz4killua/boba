@@ -79,6 +79,9 @@ function NewFile({
     dispatch({ type: 'CREATE_NOTEBOOK', notebook: {
       name: name, cells: []
     }});
+    dispatch({ type: 'CREATE_CODE_CELL', notebook: name, index: 0, cell: {
+      cell_type: "code", source: "", executed: false, outputs: []
+    }});
   }
 
   function onExit() {

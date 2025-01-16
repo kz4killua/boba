@@ -12,7 +12,7 @@ export interface BaseNotebookCell {
 
 export interface CodeCell extends BaseNotebookCell {
   cell_type: "code";
-  execution_count: number;
+  executed: boolean;
   outputs: CodeCellOutput[];
 }
 
