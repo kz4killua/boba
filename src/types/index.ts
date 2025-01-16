@@ -6,6 +6,7 @@ export interface Notebook {
 export type NotebookCell = CodeCell | MarkdownCell;
 
 export interface BaseNotebookCell {
+  id: string;
   cell_type: "code" | "markdown";
   source: string;
 }

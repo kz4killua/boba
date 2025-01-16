@@ -83,7 +83,6 @@ export const notebooksReducer = (state: NotebooksState, action: NotebooksAction)
           }
         })
       }
-
     default:
       return state;
   }

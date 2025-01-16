@@ -80,7 +80,7 @@ function NewFile({
       name: name, cells: []
     }});
     dispatch({ type: 'CREATE_CODE_CELL', notebook: name, index: 0, cell: {
-      cell_type: "code", source: "", executed: false, outputs: []
+      id: crypto.randomUUID(), cell_type: "code", source: "", executed: false, outputs: []
     }});
   }
 
