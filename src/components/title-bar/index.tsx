@@ -1,10 +1,9 @@
 "use client";
 
 import { Logo } from "@/components/ui/logo";
-import { Button } from "@/components/ui/button";
 import { useExplorer } from "@/providers/explorer-provider";
 import { PanelLeftIcon, PanelLeftCloseIcon } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { TooltipButton } from "@/components/ui/tooltip-button";
 
 
 export function TitleBar() {
@@ -23,17 +22,10 @@ export function TitleBar() {
 function ExplorerToggle() {
   const { toggle, open } = useExplorer();
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button variant={"ghost"} className="p-2 size-6" onClick={toggle}>
-            { open ? <PanelLeftCloseIcon /> : <PanelLeftIcon /> }
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent side="bottom">
-          <p>Toggle Explorer</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <TooltipButton
+      icon={open ? <PanelLeftCloseIcon /> : <PanelLeftIcon />}
+      help={"Toggle Explorer"}
+      onClick={toggle}
+    />
   );
 }

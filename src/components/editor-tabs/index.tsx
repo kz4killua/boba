@@ -1,13 +1,12 @@
 "use client";
 
-import { FileCodeIcon, XIcon } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { useNotebooks } from '@/providers/notebooks-provider'
-import type { Notebook } from '@/types'
-import clsx from 'clsx'
+import { FileCodeIcon, XIcon } from 'lucide-react';
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useNotebooks } from '@/providers/notebooks-provider';
+import type { Notebook } from '@/types';
+import clsx from 'clsx';
 import { useEffect, useRef } from 'react';
+import { TooltipButton } from '@/components/ui/tooltip-button';
 
 
 export function EditorTabs() {
@@ -73,30 +72,12 @@ function Tab({
       <div className={clsx(
         active === notebook.name ? "visible" : "group-hover:visible invisible",
       )}>
-        <CloseTabButton onClick={handleClose} />
+        <TooltipButton
+          icon={<XIcon />}
+          help="Close"
+          onClick={handleClose}
+        />
       </div>
     </div>
-  )
-}
-
-
-function CloseTabButton({
-  onClick
-} : {
-  onClick?: (e: React.MouseEvent) => void
-}) {
-  return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button variant={"ghost"} className="p-2 size-6" onClick={onClick}>
-            <XIcon />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent side="bottom">
-          <p>Close</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
   )
 }

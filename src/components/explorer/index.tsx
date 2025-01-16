@@ -3,13 +3,13 @@
 import { useState } from "react";
 import { FilePlusIcon, FileCodeIcon, EllipsisIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import type { Notebook } from "@/types";
 import { useNotebooks } from "@/providers/notebooks-provider";
 import { Loading } from "@/components/ui/loading";
 import { toast } from "@/lib/toast";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import clsx from "clsx";
+import { TooltipButton } from "@/components/ui/tooltip-button";
 
 
 export function Explorer() {
@@ -18,32 +18,15 @@ export function Explorer() {
     <div className="flex flex-col grow text-sm py-1">
       <div className="p-3 text-muted-foreground flex justify-between items-center">
         <span>Explorer</span>
-        <NewFileButton onClick={() => setCreating(true)} />
+
+        <TooltipButton
+          icon={<FilePlusIcon />}
+          help="New File"
+          onClick={() => setCreating(true)}
+        />
       </div>
       <FileList creating={creating} setCreating={setCreating} />
     </div>
-  )
-}
-
-
-function NewFileButton({
-  onClick
-} : {
-  onClick?: () => void
-}) {
-  return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button variant={"ghost"} className="p-2 size-6" onClick={onClick}>
-            <FilePlusIcon />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent side="bottom">
-          <p>New File...</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
   )
 }
 
