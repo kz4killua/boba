@@ -10,6 +10,7 @@ export type NotebooksAction =
   | { type: 'CLOSE_NOTEBOOK', name: Notebook["name"] }
   | { type: 'SET_ACTIVE_NOTEBOOK', name: Notebook["name"] | null }
   | { type: 'CREATE_CODE_CELL', notebook: Notebook["name"], cell: CodeCell, index: number }
+  | { type: 'UPDATE_CELL', notebook: Notebook["name"], id: NotebookCell["id"], cell: NotebookCell }
   | { type: 'DELETE_CELL', notebook: Notebook["name"], id: NotebookCell["id"] }
   | { type: 'MOVE_CELL', notebook: Notebook["name"], id: NotebookCell["id"], index: number }
 
@@ -79,6 +80,26 @@ export const notebooksReducer = (state: NotebooksState, action: NotebooksAction)
                 action.cell,
                 ...notebook.cells.slice(action.index)
               ]
+            }
+          } else {
+            return notebook;
+          }
+        })
+      }
+    case 'UPDATE_CELL':
+      return {
+        ...state,
+        notebooks: state.notebooks.map(notebook => {
+          if (notebook.name === action.notebook) {
+            return {
+              ...notebook,
+              cells: notebook.cells.map(cell => {
+                if (cell.id === action.id) {
+                  return action.cell;
+                } else {
+                  return cell;
+                }
+              })
             }
           } else {
             return notebook;
