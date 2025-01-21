@@ -1,6 +1,7 @@
 export interface Notebook {
-  cells: NotebookCell[];
+  id: string;
   name: string;
+  cells: NotebookCell[];
 }
 
 export type NotebookCell = CodeCell | MarkdownCell;
