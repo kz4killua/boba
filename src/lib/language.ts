@@ -31,6 +31,7 @@ export const tokensProvider: monaco.languages.IMonarchLanguage = {
   tokenizer: {
     root: [
       [combineRegex([...tokens.KEYWORD, ...tokens.BOOLEAN]), "keyword"],
+      [combineRegex([tokens.AND, tokens.OR, tokens.NOT]), "keyword"],
       [tokens.IDENTIFIER, "identifier"],
       [tokens.NUMBER, "number"],
       [tokens.TEXT, "string"],
@@ -46,9 +47,6 @@ export const tokensProvider: monaco.languages.IMonarchLanguage = {
           tokens.GTE,
           tokens.LT,
           tokens.GT,
-          tokens.AND,
-          tokens.OR,
-          tokens.NOT,
         ]), 
         "operator"
       ],
@@ -76,6 +74,13 @@ export const completionItemProvider: monaco.languages.CompletionItemProvider = {
           label: stripRegex(keyword),
           kind: monaco.languages.CompletionItemKind.Keyword,
           insertText: stripRegex(keyword),
+          range: range,
+        })),
+
+        ...[tokens.AND, tokens.OR, tokens.NOT].map(operator => ({
+          label: stripRegex(operator),
+          kind: monaco.languages.CompletionItemKind.Operator,
+          insertText: stripRegex(operator),
           range: range,
         })),
 
