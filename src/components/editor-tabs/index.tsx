@@ -16,11 +16,11 @@ export function EditorTabs() {
     <ScrollArea>
       <div className="flex gap-2 py-2 px-3">
         {
-          open.map(name => {
-            const notebook = notebooks.find(notebook => notebook.name === name);
+          open.map(id => {
+            const notebook = notebooks.find(notebook => notebook.id === id);
             if (!notebook) return null;
             return (
-              <Tab key={name} notebook={notebook} />
+              <Tab key={id} notebook={notebook} />
             )
           })
         }
@@ -42,35 +42,35 @@ function Tab({
 
   function handleClose(e: React.MouseEvent) {
     e.stopPropagation();
-    dispatch({ type: 'CLOSE_NOTEBOOK', name: notebook.name });
-    if (active === notebook.name) {
-      dispatch({ type: 'SET_ACTIVE_NOTEBOOK', name: null });
+    dispatch({ type: 'CLOSE_NOTEBOOK', notebookId: notebook.id });
+    if (active === notebook.id) {
+      dispatch({ type: 'SET_ACTIVE_NOTEBOOK', notebookId: null });
     }
   }
 
   function handleClick() {
-    dispatch({ type: 'SET_ACTIVE_NOTEBOOK', name: notebook.name });
+    dispatch({ type: 'SET_ACTIVE_NOTEBOOK', notebookId: notebook.id });
   }
 
   useEffect(() => {
-    if (active === notebook.name) {
+    if (active === notebook.id) {
       ref.current?.scrollIntoView({ behavior: 'instant', block: 'nearest' });
     }
-  }, [active, notebook.name])
+  }, [active, notebook.id]);
 
   return (
     <div 
       ref={ref}
       className={clsx(
         "group flex items-center justify-center gap-2 px-4 py-2 rounded bg-secondary cursor-pointer text-sm",
-        active !== notebook.name && "brightness-50 hover:brightness-100"
+        active !== notebook.id && "brightness-50 hover:brightness-100"
       )}
       onClick={handleClick}
     >
       <FileCodeIcon size={16} className="shrink-0" />
       <span className='whitespace-nowrap'>{notebook.name}</span>
       <div className={clsx(
-        active === notebook.name ? "visible" : "group-hover:visible invisible",
+        active === notebook.id ? "visible" : "group-hover:visible invisible",
       )}>
         <TooltipButton
           icon={<XIcon />}

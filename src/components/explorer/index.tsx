@@ -59,7 +59,7 @@ function FileList({
           </div>  
         ) : (
           sorted(notebooks).map(notebook => (
-            <File key={notebook.name} notebook={notebook} />
+            <File key={notebook.id} notebook={notebook} />
           ))
         ) 
       }
@@ -76,10 +76,11 @@ function NewFile({
   const { dispatch } = useNotebooks();
 
   function onSuccess(name: string) {
+    const notebookId = crypto.randomUUID();
     dispatch({ type: 'CREATE_NOTEBOOK', notebook: {
-      name: name, cells: []
+      id: notebookId, name: name, cells: []
     }});
-    dispatch({ type: 'CREATE_CODE_CELL', notebook: name, index: 0, cell: {
+    dispatch({ type: 'CREATE_CODE_CELL', notebookId: notebookId, index: 0, cell: {
       id: crypto.randomUUID(), cell_type: "code", source: "", executed: false, outputs: []
     }});
   }
@@ -109,7 +110,7 @@ function File({
 
   function handleDelete(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     e.stopPropagation();
-    dispatch({ type: 'DELETE_NOTEBOOK', name: notebook.name });
+    dispatch({ type: 'DELETE_NOTEBOOK', notebookId: notebook.id });
   }
 
   function handleRename(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
@@ -118,14 +119,14 @@ function File({
   }
 
   function handleOpen() {
-    dispatch({ type: 'OPEN_NOTEBOOK', name: notebook.name });
-    if (active !== notebook.name) {
-      dispatch({ type: 'SET_ACTIVE_NOTEBOOK', name: notebook.name });
+    dispatch({ type: 'OPEN_NOTEBOOK', notebookId: notebook.id });
+    if (active !== notebook.id) {
+      dispatch({ type: 'SET_ACTIVE_NOTEBOOK', notebookId: notebook.id });
     }
   }
 
   function onRenameSuccess(name: string) {
-    dispatch({ type: 'UPDATE_NOTEBOOK', name: notebook.name, notebook: {
+    dispatch({ type: 'UPDATE_NOTEBOOK', notebookId: notebook.id, notebook: {
       ...notebook, name: name
     }});
   }
