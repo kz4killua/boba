@@ -63,7 +63,7 @@ function Tab({
       ref={ref}
       className={clsx(
         "group flex items-center justify-center gap-2 px-4 py-2 rounded bg-secondary cursor-pointer text-sm",
-        active !== notebook.id && "brightness-50 hover:brightness-100"
+        active !== notebook.id && "brightness-50 hover:brightness-75"
       )}
       onClick={handleClick}
     >
