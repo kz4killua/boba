@@ -63,7 +63,7 @@ else_block ->
 # -----
 
 loop -> 
-      "repeat" block                                        {% (d) => processors.repeatForever(d[1]) %}
+      "repeat" block                                        {% (d) => processors.repeat(d[1]) %}
     | "repeat" "until" expression block                     {% (d) => processors.repeatUntil(d[2], d[3]) %}
     | "repeat" expression "times" block                     {% (d) => processors.repeatTimes(d[1], d[3]) %}
 

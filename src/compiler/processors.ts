@@ -54,8 +54,8 @@ export function expressionStatement(expression: any) {
   return { type: 'ExpressionStatement', expression: expression };
 }
 
-export function variableDeclaration(declarations: any[]) {
-  return { type: 'VariableDeclaration', kind: 'let', declarations: declarations };
+export function variableDeclaration(kind: string, declarations: any[]) {
+  return { type: 'VariableDeclaration', kind: kind, declarations: declarations };
 }
 
 export function variableDeclarator(id: any, init: any) {
@@ -63,12 +63,10 @@ export function variableDeclarator(id: any, init: any) {
 }
 
 export function assignment(id: any, init: any) {
-  return variableDeclaration([
-    variableDeclarator(id, init)
-  ])
+  return variableDeclaration('var', [variableDeclarator(id, init)])
 }
 
-export function repeatForever(body: any[]) {
+export function repeat(body: any[]) {
   const test = literal('BOOLEAN', 'true');
   return whileStatement(test, body);
 }
