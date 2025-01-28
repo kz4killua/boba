@@ -9,6 +9,7 @@ export const tokens = {
   MINUS: /\-/,
   TIMES: /\*/,
   DIVIDE: /\//,
+  MOD: /%/,
 
   // Comparison operators
   EQ: /=/,

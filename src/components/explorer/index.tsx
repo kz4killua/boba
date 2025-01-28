@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FilePlusIcon, FileCodeIcon, EllipsisIcon, PenLineIcon, Trash2Icon } from "lucide-react";
+import { FilePlusIcon, FileCodeIcon, EllipsisIcon, PenLineIcon, TrashIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Notebook } from "@/types";
 import { useNotebooks } from "@/providers/notebooks-provider";
@@ -180,7 +180,7 @@ function File({
             <PenLineIcon /> Rename
           </DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer" onClick={handleDelete}>
-            <Trash2Icon /> Delete
+            <TrashIcon /> Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

@@ -116,6 +116,7 @@ sum ->
 product ->
       product %TIMES factor                                 {% (d) => processors.binaryExpression(d[1].value, d[0], d[2]) %}
     | product %DIVIDE factor                                {% (d) => processors.binaryExpression(d[1].value, d[0], d[2]) %}
+    | product %MOD factor                                   {% (d) => processors.binaryExpression(d[1].value, d[0], d[2]) %}
     | factor                                                {% id %}
 
 factor ->

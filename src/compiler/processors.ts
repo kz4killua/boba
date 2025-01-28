@@ -115,23 +115,7 @@ function getLiteralValue(type: string, value: any) {
 }
 
 function getExpressionOperator(value: string) {
-  if (value === '+') {
-    return '+';
-  } else if (value === '-') {
-    return '-';
-  } else if (value === '*') {
-    return '*';
-  } else if (value === '/') {
-    return '/';
-  } else if (value === '<') {
-    return '<';
-  } else if (value === '>') {
-    return '>';
-  } else if (value === '<=') {
-    return '<=';
-  } else if (value === '>=') {
-    return '>=';
-  } else if (value === '=') {
+  if (value === '=') {
     return '===';
   } else if (value === 'and') {
     return '&&';
@@ -140,6 +124,6 @@ function getExpressionOperator(value: string) {
   } else if (value === 'not') {
     return '!';
   } else {
-    throw new Error(`Unknown operator: ${value}`);
+    return value;
   }
 }
