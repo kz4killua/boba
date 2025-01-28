@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FilePlusIcon, FileCodeIcon, EllipsisIcon } from "lucide-react";
+import { FilePlusIcon, FileCodeIcon, EllipsisIcon, PenLineIcon, Trash2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Notebook } from "@/types";
 import { useNotebooks } from "@/providers/notebooks-provider";
@@ -9,13 +9,14 @@ import { Loading } from "@/components/ui/loading";
 import { toast } from "@/lib/toast";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import clsx from "clsx";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { TooltipButton } from "@/components/ui/tooltip-button";
 
 
 export function Explorer() {
   const [creating, setCreating] = useState(false);
   return (
-    <div className="flex flex-col grow text-sm py-1">
+    <div className="flex flex-col grow text-sm pt-1 pb-5">
       <div className="p-3 text-muted-foreground flex justify-between items-center">
         <span>Explorer</span>
 
@@ -42,28 +43,30 @@ function FileList({
   const { notebooks, loading } = useNotebooks();
 
   function sorted(notebooks: Notebook[]) {
-    return notebooks.sort((a, b) => a.name.localeCompare(b.name));
+    return notebooks.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
   }
 
   return (
-    <div className="flex flex-col grow">
-      {
-        creating && (
-          <NewFile setCreating={setCreating} />
-        )
-      }
-      {
-        loading ? (
-          <div className="w-full h-full flex justify-center items-center">
-            <Loading />
-          </div>  
-        ) : (
-          sorted(notebooks).map(notebook => (
-            <File key={notebook.id} notebook={notebook} />
-          ))
-        ) 
-      }
-    </div>
+    <ScrollArea>
+      <div className="flex flex-col">
+        {
+          creating && (
+            <NewFile setCreating={setCreating} />
+          )
+        }
+        {
+          loading ? (
+            <div className="w-full h-full flex justify-center items-center">
+              <Loading />
+            </div>  
+          ) : (
+            sorted(notebooks).map(notebook => (
+              <File key={notebook.id} notebook={notebook} />
+            ))
+          ) 
+        }
+      </div>
+    </ScrollArea>
   )
 }
 
@@ -153,7 +156,7 @@ function File({
               onExit={onRenameExit}
             />
           ) : (
-            <span>{notebook.name}</span>
+            <span className="whitespace-nowrap">{notebook.name}</span>
           )
         }
       </div>
@@ -174,10 +177,10 @@ function File({
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-48">
           <DropdownMenuItem className="cursor-pointer" onClick={handleRename}>
-            Rename
+            <PenLineIcon /> Rename
           </DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer" onClick={handleDelete}>
-            Delete
+            <Trash2Icon /> Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
