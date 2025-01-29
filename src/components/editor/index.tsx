@@ -39,7 +39,7 @@ export function Editor() {
 
   return (
     <ScrollArea>
-      <div className="px-2 pb-12">
+      <div className="px-3 pb-12">
         <CellInsertion index={0} />
         {
           notebook.cells.map((cell, index) => (
@@ -352,16 +352,11 @@ function BaseEditor({
       onChange={onChange}
       onMount={handleMount}
       defaultLanguage={type === "code" ? languageName : "markdown"}
-      loading={<BaseEditorLoading />}
+      loading={
+        <div className="w-full flex items-center justify-center">
+          <Loading />
+        </div>
+      }
     />
-  )
-}
-
-
-function BaseEditorLoading() {
-  return (
-    <div className="w-full flex items-center justify-center">
-      <Loading />
-    </div>
   )
 }

@@ -65,7 +65,16 @@ const config: Config = {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
-  		}
+  		},
+			keyframes: {
+        "editor-loader-slide": {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(400%)" },
+        },
+      },
+      animation: {
+        "editor-loader-slide": "editor-loader-slide 3s infinite linear",
+      },
   	}
   },
   plugins: [
