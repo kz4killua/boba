@@ -12,6 +12,7 @@ import { Loading } from "@/components/ui/loading";
 import { TooltipButton } from "@/components/ui/tooltip-button";
 import { useNotebooks } from "@/providers/notebooks-provider";
 import { Runtime } from "@/runtime";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import parser from "@/compiler/parser";
 import escodegen from "escodegen";
 
@@ -37,28 +38,28 @@ export function Editor() {
   });
 
   return (
-    <div className="px-2">
-      <CellInsertion index={0} />
-
-      {
-        notebook.cells.map((cell, index) => (
-          <React.Fragment key={cell.id}>
-            {cell.cell_type === "code" ? (
-              <CodeCellView 
-                notebook={notebook} 
-                cell={cell} 
-                index={index} 
-                runtime={runtimes.current.get(notebook.id)!}
-              />
-            ) : (
-              <MarkdownCellView />
-            )}
-            <CellInsertion index={index + 1} />
-          </React.Fragment>
-        ))
-      }
-      
-    </div>
+    <ScrollArea>
+      <div className="px-2 pb-12">
+        <CellInsertion index={0} />
+        {
+          notebook.cells.map((cell, index) => (
+            <React.Fragment key={cell.id}>
+              {cell.cell_type === "code" ? (
+                <CodeCellView 
+                  notebook={notebook} 
+                  cell={cell} 
+                  index={index} 
+                  runtime={runtimes.current.get(notebook.id)!}
+                />
+              ) : (
+                <MarkdownCellView />
+              )}
+              <CellInsertion index={index + 1} />
+            </React.Fragment>
+          ))
+        }
+      </div>
+    </ScrollArea>
   )
 }
 
@@ -341,7 +342,7 @@ function BaseEditor({
         padding: { top: paddingTop, bottom: paddingBottom },
         lineHeight: lineHeight,
         scrollBeyondLastLine: false,
-        scrollbar: { vertical: 'hidden', horizontal: 'auto' },
+        scrollbar: { vertical: 'hidden', horizontal: 'auto', alwaysConsumeMouseWheel: false },
         rulers: [],
         overviewRulerBorder: false,
         overviewRulerLanes: 0,

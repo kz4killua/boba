@@ -31,9 +31,11 @@ export default function Page() {
             <ResizableHandle />
           </>)
         }
-        <ResizablePanel defaultSize={75}>
+        <ResizablePanel className="flex flex-col grow" defaultSize={75}>
           <EditorTabs />
-          {active && <Editor />}
+          {
+            active && <Editor />
+          }
         </ResizablePanel>
       </ResizablePanelGroup>
     </main>
