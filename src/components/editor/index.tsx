@@ -15,6 +15,7 @@ import { Runtime } from "@/runtime";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import parser from "@/compiler/parser";
 import escodegen from "escodegen";
+import './editor.modules.css';
 
 
 export function Editor() {
@@ -208,7 +209,7 @@ function CodeCellView({
         </div>
 
         {/* Cell editor */}
-        <div className="grow flex flex-col gap-2 border border-transparent focus-within:border-primary">
+        <div className="grow flex flex-col gap-2 rounded-md border border-transparent focus-within:border-primary">
           <BaseEditor
             source={cell.source}
             type={"code"}
@@ -217,7 +218,7 @@ function CodeCellView({
         </div>
 
         {/* Cell action buttons */}
-        <div className="absolute -top-4 right-4 px-2 py-1 space-x-2 rounded border bg-secondary opacity-0 group-hover:opacity-100">
+        <div className="absolute -top-4 right-4 px-2 py-1 space-x-2 rounded-md border bg-secondary opacity-0 group-hover:opacity-100">
           <TooltipButton
             icon={<ArrowUpIcon />}
             help="Move up"
@@ -240,7 +241,7 @@ function CodeCellView({
       {/* Cell outputs */}
       <div className="pl-8">
         {cell.outputs.map((output, index) => (
-          <div key={index} className="p-2 rounded my-2">
+          <div key={index} className="p-2 rounded-md my-2">
             <div className="text-sm whitespace-pre-wrap text-foreground">
               {output.data["text/plain"]}
             </div>
