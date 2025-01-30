@@ -39,7 +39,7 @@ export function Editor() {
 
   return (
     <ScrollArea>
-      <div className="px-3 pb-12">
+      <div className="px-3 pt-2 pb-12">
         <CellInsertion index={0} />
         {
           notebook.cells.map((cell, index) => (
@@ -282,7 +282,7 @@ function CellInsertion({
     )}>
       <div className="border"/>
 
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2">
+      <div className="z-10 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2">
         <TooltipButton
           icon={<PlusIcon />}
           help="Add code cell"
