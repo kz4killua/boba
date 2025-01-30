@@ -177,7 +177,7 @@ function CodeCellView({
 
       <div className="group relative flex flex-row gap-2">
         
-        {/* Cell status indicators */}
+        {/* Run button & cell status indicators */}
         <div className="flex flex-col justify-between items-center">
           {
             (status === "pending") ? (
@@ -185,7 +185,7 @@ function CodeCellView({
                 <Loading />
               </div>
             ) : (
-              <div className="opacity-0 group-hover:opacity-100">
+              <div className="opacity-0 group-focus-within:opacity-100 group-hover:opacity-100">
                 <TooltipButton
                   icon={<PlayIcon className="stroke-emerald-500" />}
                   help="Run"
@@ -207,7 +207,8 @@ function CodeCellView({
           }
         </div>
 
-        <div className="grow flex flex-col gap-2">
+        {/* Cell editor */}
+        <div className="grow flex flex-col gap-2 border border-transparent focus-within:border-primary">
           <BaseEditor
             source={cell.source}
             type={"code"}
