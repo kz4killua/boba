@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google"
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { ExplorerProvider } from "@/providers/explorer-provider";
 import { NotebooksProvider } from "@/providers/notebooks-provider";
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/sonner";
+import Script from 'next/script';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,6 +29,7 @@ export default function RootLayout({
             <Toaster />
           </NotebooksProvider>
         </ExplorerProvider>
+        <Script src="/made-with-love.js" />
       </body>
     </html>
   );
