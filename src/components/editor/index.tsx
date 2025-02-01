@@ -313,6 +313,8 @@ function BaseEditor({
   const paddingBottom = 15;
 
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
 
   function calculateHeight(content: string) {
     const lines = Math.max(1, content.split('\n').length);
@@ -330,35 +332,58 @@ function BaseEditor({
   }
 
   useEffect(() => {
+
+    const element = containerRef.current;
+    if (!element) {
+      return;
+    }
+
+    const observer = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      if (entry) {
+        setContainerSize({ width: entry.contentRect.width, height: entry.contentRect.height });
+      }
+    });
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+    };
+
+  }, []);
+
+  useEffect(() => {
     if (editorRef.current) {
       editorRef.current.layout();
     }
-  }, [source])
+  }, [containerSize]);
 
   return (
-    <MonacoEditor
-      value={source}
-      theme="vs-dark"
-      options={{
-        minimap: { enabled: false },
-        padding: { top: paddingTop, bottom: paddingBottom },
-        lineHeight: lineHeight,
-        scrollBeyondLastLine: false,
-        scrollbar: { vertical: 'hidden', horizontal: 'auto', alwaysConsumeMouseWheel: false },
-        rulers: [],
-        overviewRulerBorder: false,
-        overviewRulerLanes: 0,
-        lineNumbers: "off",
-      }}
-      height={calculateHeight(source)}
-      onChange={onChange}
-      onMount={handleMount}
-      defaultLanguage={type === "code" ? languageName : "markdown"}
-      loading={
-        <div className="w-full flex items-center justify-center">
-          <Loading />
-        </div>
-      }
-    />
+    <div ref={containerRef}>
+      <MonacoEditor
+        value={source}
+        theme="vs-dark"
+        options={{
+          minimap: { enabled: false },
+          padding: { top: paddingTop, bottom: paddingBottom },
+          lineHeight: lineHeight,
+          scrollBeyondLastLine: false,
+          scrollbar: { vertical: 'hidden', horizontal: 'auto', alwaysConsumeMouseWheel: false },
+          rulers: [],
+          overviewRulerBorder: false,
+          overviewRulerLanes: 0,
+          lineNumbers: "off",
+        }}
+        height={calculateHeight(source)}
+        onChange={onChange}
+        onMount={handleMount}
+        defaultLanguage={type === "code" ? languageName : "markdown"}
+        loading={
+          <div className="w-full flex items-center justify-center">
+            <Loading />
+          </div>
+        }
+      />
+    </div>
   )
 }
