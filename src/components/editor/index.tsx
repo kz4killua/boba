@@ -55,7 +55,8 @@ export function Editor() {
         <CellInsertion index={0} />
         {
           notebook.cells.map((cell, index) => (
-            <React.Fragment key={cell.id}>
+            // Forcing re-rendering on reorders (index changes) fixes disposal conflicts
+            <React.Fragment key={`${cell.id}-${index}`}>
               {cell.cell_type === "code" ? (
                 <CodeCellView 
                   notebook={notebook} 
