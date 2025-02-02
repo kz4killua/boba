@@ -1,7 +1,7 @@
 import { tokens } from "@/compiler/lexer";
 import * as monaco from "monaco-editor";
 
-export const languageName = "boba";
+export const languageId = "boba";
 
 export const languageConfiguration: monaco.languages.LanguageConfiguration = {
   surroundingPairs: [

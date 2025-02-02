@@ -4,8 +4,9 @@ import React from "react";
 import clsx from "clsx";
 import * as monaco from "monaco-editor";
 import MonacoEditor, { Monaco } from "@monaco-editor/react";
+import { useMonaco } from "@/hooks/use-monaco";
 import { ArrowDownIcon, ArrowUpIcon, CheckIcon, PlayIcon, PlusIcon, TrashIcon, XIcon } from "lucide-react";
-import { tokensProvider, languageName, completionItemProvider, languageConfiguration } from "@/lib/language";
+import { tokensProvider, languageId, completionItemProvider, languageConfiguration } from "@/lib/language";
 import { useState, useEffect, useRef } from "react";
 import type { CodeCell, Notebook, NotebookCell } from "@/types";
 import { Loading } from "@/components/ui/loading";
@@ -22,8 +23,18 @@ export function Editor() {
 
   const { open, active, notebooks } = useNotebooks();
   const runtimes = useRef<Map<Notebook["id"], Runtime>>(new Map());
-  const notebook = notebooks.find(n => n.id === active);
+  const monaco = useMonaco();
 
+  useEffect(() => {
+    if (monaco) {
+      monaco.languages.register({ id: languageId });
+      monaco.languages.setMonarchTokensProvider(languageId, tokensProvider);
+      monaco.languages.registerCompletionItemProvider(languageId, completionItemProvider);
+      monaco.languages.setLanguageConfiguration(languageId, languageConfiguration);
+    }
+  }, [monaco]);
+
+  const notebook = notebooks.find(n => n.id === active);
   if (!notebook) {
     return null;
   }
@@ -323,12 +334,6 @@ function BaseEditor({
 
   function handleMount(editor: monaco.editor.IStandaloneCodeEditor, monaco: Monaco) {
     editorRef.current = editor;
-    if (type === "code") {
-      monaco.languages.register({ id: languageName });
-      monaco.languages.setMonarchTokensProvider(languageName, tokensProvider);
-      monaco.languages.registerCompletionItemProvider(languageName, completionItemProvider);
-      monaco.languages.setLanguageConfiguration(languageName, languageConfiguration);
-    }
   }
 
   useEffect(() => {
@@ -377,7 +382,7 @@ function BaseEditor({
         height={calculateHeight(source)}
         onChange={onChange}
         onMount={handleMount}
-        defaultLanguage={type === "code" ? languageName : "markdown"}
+        defaultLanguage={type === "code" ? languageId : "markdown"}
         loading={
           <div className="w-full flex items-center justify-center">
             <Loading />
