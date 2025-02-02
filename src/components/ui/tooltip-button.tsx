@@ -28,7 +28,7 @@ export function TooltipButton({
             {icon} {text}
           </Button>
         </TooltipTrigger>
-        <TooltipContent side="bottom">
+        <TooltipContent side="bottom" className="bg-background text-foreground rounded border">
           <p>{help}</p>
         </TooltipContent>
       </Tooltip>

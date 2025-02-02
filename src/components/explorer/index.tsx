@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import type { Notebook } from "@/types";
 import { useNotebooks } from "@/providers/notebooks-provider";
 import { Loading } from "@/components/ui/loading";
-import { toast } from "@/lib/toast";
+import { toast } from "@/components/ui/toast";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import clsx from "clsx";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -205,9 +205,9 @@ function FileNameInput({
   function handleBlur() {
     if (name && name !== initial) {
       if (!isValid(name)) {
-        toast("Invalid file name", "File names must not be empty.", "error");
+        toast("error", "Invalid file name. File names must not be empty.");
       } else if (!isUnique(name, notebooks)) {
-        toast("Invalid file name", "File names must be unique.", "error");
+        toast("error", "Invalid file name. File names must be unique.");
       } else {
         onSuccess(name);
       }
