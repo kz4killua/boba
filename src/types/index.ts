@@ -14,7 +14,7 @@ export interface BaseNotebookCell {
 
 export interface CodeCell extends BaseNotebookCell {
   cell_type: "code";
-  executed: boolean;
+  status: "success" | "failure" | null;
   outputs: CodeCellOutput[];
 }
 

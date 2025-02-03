@@ -37,14 +37,25 @@ function Tab({
   notebook: Notebook
 }) {
 
-  const { active, dispatch } = useNotebooks();
+  const { active, open, dispatch } = useNotebooks();
   const ref = useRef<HTMLDivElement>(null);
 
   function handleClose(e: React.MouseEvent) {
     e.stopPropagation();
     dispatch({ type: 'CLOSE_NOTEBOOK', notebookId: notebook.id });
     if (active === notebook.id) {
-      dispatch({ type: 'SET_ACTIVE_NOTEBOOK', notebookId: null });
+      // Set the active notebook to the last open notebook
+      dispatch({ type: 'SET_ACTIVE_NOTEBOOK', notebookId: (
+        open.findLast(id => id !== notebook.id) || null
+      )});
+      // Clear execution statuses of all cells
+      notebook.cells.forEach(cell => {
+        if (cell.cell_type === "code") {
+          dispatch({ type: 'UPDATE_CELL', notebookId: notebook.id, cellId: cell.id, cell: {
+            ...cell, status: null
+          }});
+        }
+      });
     }
   }
 

@@ -25,8 +25,18 @@ export function Editor() {
   const runtimes = useRef<Map<Notebook["id"], Runtime>>(new Map());
   const monaco = useMonaco();
 
+  function createRuntime(notebook: Notebook) {
+    runtimes.current.set(notebook.id, new Runtime());
+  }
+
+  function deleteRuntime(notebook: Notebook) {
+    // Terminate the worker and remove the runtime
+    runtimes.current.get(notebook.id)?.worker.terminate();
+    runtimes.current.delete(notebook.id);
+  }
+
   useEffect(() => {
-    if (monaco) {
+    if (monaco && !monaco.languages.getLanguages().find(language => language.id === languageId)) {
       monaco.languages.register({ id: languageId });
       monaco.languages.setMonarchTokensProvider(languageId, tokensProvider);
       monaco.languages.registerCompletionItemProvider(languageId, completionItemProvider);
@@ -34,20 +44,27 @@ export function Editor() {
     }
   }, [monaco]);
 
+  // Initialize runtimes for each open notebook before rendering
+  notebooks.forEach(notebook => {
+    if (open.includes(notebook.id)) {
+      if (!runtimes.current.has(notebook.id)) {
+        createRuntime(notebook);
+      }
+    } else {
+      if (runtimes.current.has(notebook.id)) {
+        deleteRuntime(notebook);
+      }
+    }
+  });
+
   const notebook = notebooks.find(n => n.id === active);
   if (!notebook) {
     return null;
   }
-
-  // Initialize runtimes for each open notebook
-  notebooks.forEach(notebook => {
-    if (open.includes(notebook.id) && !runtimes.current.has(notebook.id)) {
-      runtimes.current.set(notebook.id, new Runtime());
-    } else if (!open.includes(notebook.id) && runtimes.current.has(notebook.id)) {
-      runtimes.current.get(notebook.id)!.worker.terminate();
-      runtimes.current.delete(notebook.id);
-    }
-  });
+  const runtime = runtimes.current.get(notebook.id);
+  if (!runtime) {
+    return null;
+  }
 
   return (
     <ScrollArea>
@@ -62,7 +79,7 @@ export function Editor() {
                   notebook={notebook} 
                   cell={cell} 
                   index={index} 
-                  runtime={runtimes.current.get(notebook.id)!}
+                  runtime={runtime}
                 />
               ) : (
                 <MarkdownCellView />
@@ -89,13 +106,14 @@ function CodeCellView({
 }) {
 
   const { dispatch } = useNotebooks();
-  const [status, setStatus] = useState<"failed" | "succeeded" | "pending" | null>(null)
+  const [running, setRunning] = useState(false);
 
   function handleChange(value: string | undefined) {
     if (value !== undefined) {
-      dispatch({ type: 'UPDATE_CELL', notebookId: notebook.id, cellId: cell.id, cell: { ...cell, source: value } });
+      dispatch({ type: 'UPDATE_CELL', notebookId: notebook.id, cellId: cell.id, cell: { 
+        ...cell, source: value, status: null 
+      }});
     }
-    setStatus(null);
   }
 
   function handleMoveUp() {
@@ -131,7 +149,7 @@ function CodeCellView({
       cellId: cell.id, 
       cell: { 
         ...cell, 
-        executed: true, 
+        status: result.error ? "failure" : "success", 
         outputs: [{ 
           output_type: "execute_result", 
           data: { "text/plain": text } 
@@ -143,7 +161,7 @@ function CodeCellView({
 
   function handleRun() {
     
-    setStatus("pending");
+    setRunning(true);
 
     let source = cell.source;
 
@@ -158,14 +176,12 @@ function CodeCellView({
       parser.feed(source);
     } catch (error) {
       updateResult({ error: `ParserError: Please check your code for syntax errors.` });
-      setStatus("failed");
       return;
     }
 
     // Get the AST
     if (parser.results.length === 0) {
       updateResult({ result: "" });
-      setStatus("succeeded");
       return;
     }
     const ast = parser.results[0];
@@ -178,10 +194,10 @@ function CodeCellView({
     // Execute the code
     runtime.execute(code).then((result) => {
       updateResult(result as any);
-      setStatus("succeeded");
     }).catch((error) => {
       updateResult(error as any);
-      setStatus("failed");
+    }).finally(() => {
+      setRunning(false);
     });
   }
 
@@ -193,7 +209,7 @@ function CodeCellView({
         {/* Run button & cell status indicators */}
         <div className="flex flex-col justify-between items-center">
           {
-            (status === "pending") ? (
+            (running) ? (
               <div className="p-2 size-6">
                 <Loading />
               </div>
@@ -208,11 +224,11 @@ function CodeCellView({
             )
           }
           {
-            (status === "succeeded") ? (
+            (cell.status === "success") ? (
               <div className="p-1">
                 <CheckIcon className="stroke-emerald-500" size={14} />
               </div>
-            ) : (status === "failed") ? (
+            ) : (cell.status === "failure") ? (
               <div className="p-1">
                 <XIcon className="stroke-red-500" size={14} />
               </div>
@@ -284,7 +300,7 @@ function CellInsertion({
   function handleClick() {
     if (active) {
       dispatch({ type: 'CREATE_CODE_CELL', notebookId: active, index: index, cell: {
-        id: crypto.randomUUID(), cell_type: "code", source: "", executed: false, outputs: []
+        id: crypto.randomUUID(), cell_type: "code", source: "", status: null, outputs: []
       }});
     }
   }
