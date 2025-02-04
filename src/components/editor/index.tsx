@@ -128,17 +128,17 @@ function CodeCellView({
     dispatch({ type: 'DELETE_CELL', notebookId: notebook.id, cellId: cell.id });
   }
 
-  function updateResult(result: { logs?: string[], result?: string, error?: string }) {
-    
+  function updateResult(result: { logs?: string[], result?: any, error?: string }) {
+
     // Build the output text
     let text = "";
-    if (result.logs && result.logs.length > 0) {
+    if (result.logs !== undefined && result.logs.length > 0) {
       text += result.logs.join("\n") + "\n";
     }
-    if (result.result) {
-      text += result.result + "\n";
+    if (result.result !== undefined) {
+      text += result.result.toString() + "\n";
     }
-    if (result.error) {
+    if (result.error !== undefined) {
       text += result.error + "\n";
     }
 
