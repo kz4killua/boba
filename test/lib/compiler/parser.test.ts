@@ -1,4 +1,4 @@
-import parser from "../../src/compiler/parser";
+import parser from "../../../src/lib/compiler/parser";
 
 
 describe('Parser', () => {

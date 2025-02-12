@@ -1,4 +1,4 @@
-import lexer from "../../src/compiler/lexer";
+import lexer from "../../../src/lib/compiler/lexer";
 
 
 describe('Lexer', () => {

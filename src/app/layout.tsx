@@ -29,7 +29,7 @@ export default function RootLayout({
             <Toaster />
           </NotebooksProvider>
         </ExplorerProvider>
-        <Script src="/made-with-love.js" />
+        <Script src="/scripts/made-with-love.js" />
       </body>
     </html>
   );
