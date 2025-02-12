@@ -1,4 +1,4 @@
-const moo = require('moo');
+import moo from 'moo';
 
 
 export const tokens = {

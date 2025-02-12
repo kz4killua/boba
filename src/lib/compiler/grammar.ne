@@ -1,7 +1,5 @@
-@preprocessor typescript
-
 @{%
-    const lexer = require('./lexer');
+    const lexer = require('./lexer').default;
     const processors = require('./processors');
 %}
 
@@ -54,7 +52,7 @@ assignment ->
 # -----------------
 
 output -> 
-      "output" expression (%COMMA expression):*                               {% (d) => processors.output([d[1], ...d[2].map(([a, b]: [any, any]) => b)]) %}
+      "output" expression (%COMMA expression):*                               {% (d) => processors.output([d[1], ...d[2].map(([a, b]) => b)]) %}
 
 # if statements
 # -------------

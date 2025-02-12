@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "predev": "npm run compile-grammar",
+    "prebuild": "npm run compile-grammar",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
-    "compile-grammar": "nearleyc src/lib/compiler/grammar.ne -o src/lib/compiler/grammar.ts"
+    "compile-grammar": "nearleyc src/lib/compiler/grammar.ne -o src/lib/compiler/grammar.js"
   },
   "keywords": [],
   "author": "",

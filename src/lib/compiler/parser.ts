@@ -1,4 +1,4 @@
-const nearley = require("nearley");
+import nearley from "nearley";
 import { default as lexer } from "./lexer";
 import { default as grammar } from "./grammar";
 
