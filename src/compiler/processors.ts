@@ -1,3 +1,6 @@
+// AST objects
+// -----------
+
 export function program(body: any[]) {
   return { type: 'Program', body: body, sourceType: 'script' };
 }
@@ -62,13 +65,11 @@ export function variableDeclarator(id: any, init: any) {
   return { type: 'VariableDeclarator', id: id, init: init };
 }
 
+// Language constructs
+// -------------------
+
 export function assignment(id: any, init: any) {
   return variableDeclaration('var', [variableDeclarator(id, init)])
-}
-
-export function repeat(body: any[]) {
-  const test = literal('BOOLEAN', 'true');
-  return whileStatement(test, body);
 }
 
 export function repeatUntil(test: any, body: any[]) {
@@ -76,10 +77,17 @@ export function repeatUntil(test: any, body: any[]) {
 }
 
 export function repeatTimes(times: any, body: any[]) {
-  const _identifier = identifier('_');
-  const init = assignment(_identifier, literal('NUMBER', '0'));
-  const test = binaryExpression('<', _identifier, times);
-  const update = updateExpression('++', _identifier, false);
+  const id = identifier('_');
+  const init = assignment(id, literal('NUMBER', '0'));
+  const test = binaryExpression('<', id, times);
+  const update = updateExpression('++', id, false);
+  return forStatement(init, test, update, body);
+}
+
+export function repeatFor(id: any, from: any, to: any, body: any) {
+  const init = assignment(id, from);
+  const test = binaryExpression('<=', id, to);
+  const update = updateExpression('++', id, false);
   return forStatement(init, test, update, body);
 }
 
@@ -96,11 +104,14 @@ export function conditional(ifBlock: any, elifBlocks: any[], elseBlock: any | nu
   }
 }
 
-export function output(_arguments: any[]) {
+export function output(args: any[]) {
   const callee = memberExpression(identifier('console'), identifier('log'), false, false);
-  const expression = callExpression(callee, _arguments, false);
+  const expression = callExpression(callee, args, false);
   return expressionStatement(expression);
 }
+
+// Helper functions
+// ----------------
 
 function getLiteralValue(type: string, value: any) {
   if (type === 'NUMBER') {

@@ -31,7 +31,7 @@ export const tokens = {
   KEYWORD: [
     /\bset\b/, /\bto\b/, 
     /\bif\b/, /\belse\b/, 
-    /\brepeat\b/, /\buntil\b/, /\btimes\b/, 
+    /\brepeat\b/, /\buntil\b/, /\btimes\b/, /\bfor\b/, /\bfrom\b/, /\bto\b/,
     /\boutput\b/
   ],
 

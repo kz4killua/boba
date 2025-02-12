@@ -169,7 +169,7 @@ describe('Parser', () => {
     let input: string;
 
     input = (
-      'repeat\n' +
+      'repeat for i from 1 to 20\n' +
       '    set complete to true\n'
     );
     parser.feed(input);
