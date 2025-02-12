@@ -12,25 +12,37 @@ const processors = require('./processors');
 # ==============
 
 main -> 
-      statements                                            {% (d) => processors.program(d[0]) %}
+      %NL:* statements %NL:*                                 {% (d) => processors.program(d[1]) %}
 
 # STATEMENTS
 # ==========
 
-statements -> 
-      statements %NL statement                              {% (d) => d[0].concat([d[2]]) %}
-    | statement                                             {% (d) => [d[0]] %}
+statements ->
+      simple_statement %NL:+ statements                     {% (d) => [d[0], ...d[2]] %}
+    | compound_statement %NL:* statements                   {% (d) => [d[0], ...d[2]] %}
+    | simple_statement                                      {% (d) => [d[0]] %}
+    | compound_statement                                    {% (d) => [d[0]] %}
 
-statement -> 
+# Simple statements (Terminated by NL tokens)
+# -------------------------------------------
+
+simple_statement ->
       assignment                                            {% id %}
-    | conditional                                           {% id %}
-    | loop                                                  {% id %}
     | expression                                            {% id %}
     | output                                                {% id %}
 
-    | statement %NL                                         {% (d) => d[0] %}
-    | %NL statement                                         {% (d) => d[1] %}
-    | %NL                                                   {% (d) => [] %}
+# Compound statements (Terminated by DEDENT tokens)
+# -------------------------------------------------
+
+compound_statement ->
+      conditional                                           {% id %}
+    | loop                                                  {% id %}
+
+# Blocks
+# ------
+
+block -> 
+      %NL:+ %INDENT %NL:* statements %NL:* %DEDENT                  {% (d) => processors.blockStatement(d[3]) %}
 
 # Assignment statements
 # ---------------------
@@ -66,12 +78,6 @@ loop ->
       "repeat" block                                        {% (d) => processors.repeat(d[1]) %}
     | "repeat" "until" expression block                     {% (d) => processors.repeatUntil(d[2], d[3]) %}
     | "repeat" expression "times" block                     {% (d) => processors.repeatTimes(d[1], d[3]) %}
-
-# Blocks
-# ------
-
-block -> 
-      %NL %INDENT statements %DEDENT                        {% (d) => processors.blockStatement(d[2]) %}
 
 # EXPRESSIONS
 # ===========
