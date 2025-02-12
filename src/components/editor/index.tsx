@@ -6,15 +6,15 @@ import * as monaco from "monaco-editor";
 import MonacoEditor, { Monaco } from "@monaco-editor/react";
 import { useMonaco } from "@/hooks/use-monaco";
 import { ArrowDownIcon, ArrowUpIcon, CheckIcon, PlayIcon, PlusIcon, TrashIcon, XIcon } from "lucide-react";
-import { tokensProvider, languageId, completionItemProvider, languageConfiguration } from "@/lib/language";
+import { tokensProvider, languageId, completionItemProvider, languageConfiguration } from "@/lib/editor";
 import { useState, useEffect, useRef } from "react";
 import type { CodeCell, Notebook, NotebookCell } from "@/types";
 import { Loading } from "@/components/ui/loading";
 import { TooltipButton } from "@/components/ui/tooltip-button";
 import { useNotebooks } from "@/providers/notebooks-provider";
-import { Runtime } from "@/runtime";
+import { Runtime } from "@/lib/runtime";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import parser from "@/compiler/parser";
+import parser from "@/lib/compiler/parser";
 import escodegen from "escodegen";
 import './editor.modules.css';
 
@@ -167,14 +167,14 @@ function CodeCellView({
 
     // Normalize line endings to LF
     source = source.replace(/\r\n/g, "\n");
-    
-    console.log("Parsing:", JSON.stringify(source));
 
     // Parse the code
+    console.log("Parsing:", JSON.stringify(source));
     try {
       parser.reset();
       parser.feed(source);
     } catch (error) {
+      console.error(error);
       updateResult({ error: `ParserError: Please check your code for syntax errors.` });
       return;
     }

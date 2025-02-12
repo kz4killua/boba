@@ -3,7 +3,7 @@ export class Runtime {
   worker: Worker;
 
   constructor() {
-    this.worker = new Worker('/runtime/worker.js');
+    this.worker = new Worker('/workers/runtime.js');
   }
 
   execute(code: string) {

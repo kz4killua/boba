@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
-    "compile-grammar": "nearleyc src/compiler/grammar.ne -o src/compiler/grammar.ts"
+    "compile-grammar": "nearleyc src/lib/compiler/grammar.ne -o src/lib/compiler/grammar.ts"
   },
   "keywords": [],
   "author": "",

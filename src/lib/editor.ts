@@ -1,4 +1,4 @@
-import { tokens } from "@/compiler/lexer";
+import { tokens } from "@/lib/compiler/lexer";
 import * as monaco from "monaco-editor";
 
 export const languageId = "boba";
