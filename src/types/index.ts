@@ -1,3 +1,14 @@
+export interface ASTNode {
+  type: string;
+  [key: string]: unknown;
+}
+
+export interface ExecutionResult {
+  logs?: string[];
+  result?: string;
+  error?: string;
+}
+
 export interface Notebook {
   id: string;
   name: string;

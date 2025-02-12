@@ -3,12 +3,12 @@
 import React from "react";
 import clsx from "clsx";
 import * as monaco from "monaco-editor";
-import MonacoEditor, { Monaco } from "@monaco-editor/react";
+import MonacoEditor from "@monaco-editor/react";
 import { useMonaco } from "@/hooks/use-monaco";
 import { ArrowDownIcon, ArrowUpIcon, CheckIcon, PlayIcon, PlusIcon, TrashIcon, XIcon } from "lucide-react";
 import { tokensProvider, languageId, completionItemProvider, languageConfiguration } from "@/lib/editor";
 import { useState, useEffect, useRef } from "react";
-import type { CodeCell, Notebook, NotebookCell } from "@/types";
+import type { CodeCell, ExecutionResult, Notebook, NotebookCell } from "@/types";
 import { Loading } from "@/components/ui/loading";
 import { TooltipButton } from "@/components/ui/tooltip-button";
 import { useNotebooks } from "@/providers/notebooks-provider";
@@ -128,7 +128,7 @@ function CodeCellView({
     dispatch({ type: 'DELETE_CELL', notebookId: notebook.id, cellId: cell.id });
   }
 
-  function updateResult(result: { logs?: string[], result?: any, error?: string }) {
+  function updateResult(result: ExecutionResult) {
 
     // Build the output text
     let text = "";
@@ -193,9 +193,9 @@ function CodeCellView({
 
     // Execute the code
     runtime.execute(code).then((result) => {
-      updateResult(result as any);
+      updateResult(result as ExecutionResult);
     }).catch((error) => {
-      updateResult(error as any);
+      updateResult(error as ExecutionResult);
     }).finally(() => {
       setRunning(false);
     });
@@ -349,7 +349,7 @@ function BaseEditor({
     return paddingTop + paddingBottom + lineHeight * lines;
   }
 
-  function handleMount(editor: monaco.editor.IStandaloneCodeEditor, monaco: Monaco) {
+  function handleMount(editor: monaco.editor.IStandaloneCodeEditor) {
     editorRef.current = editor;
   }
 

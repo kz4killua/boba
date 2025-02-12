@@ -30,5 +30,6 @@ export function useMonaco() {
 }
 
 function useMount(effect: EffectCallback) {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(effect, []);
 }

@@ -161,5 +161,5 @@ class Lexer {
   }
 }
 
-
-export default new Lexer();
+const lexer = new Lexer();
+export default lexer;

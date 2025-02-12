@@ -15,7 +15,7 @@ export class Runtime {
           resolve(event.data);
         }
       }
-      this.worker.onerror = (event) => {
+      this.worker.onerror = () => {
         reject({ error: "RuntimeError: Please try refreshing the page." });
       }
       this.worker.postMessage({ code: code });

@@ -1,12 +1,13 @@
 import nearley from "nearley";
 import { default as lexer } from "./lexer";
 import { default as grammar } from "./grammar";
+import { ASTNode } from "@/types";
 
 
 class Parser {
 
   parser: nearley.Parser;
-  results: any[];
+  results: ASTNode[];
 
   constructor() {
     this.parser = getParser();
@@ -33,4 +34,5 @@ function getParser() {
 }
 
 
-export default new Parser();
+const parser = new Parser();
+export default parser;

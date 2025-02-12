@@ -36,7 +36,7 @@ export const NotebooksProvider = ({
       });
       setLoading(false);
     }
-  }, []);
+  }, [loading]);
 
   useEffect(() => {
     saveNotebooks(state.notebooks);
