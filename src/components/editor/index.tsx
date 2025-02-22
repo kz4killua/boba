@@ -267,14 +267,16 @@ function CodeCellView({
       </div>
 
       {/* Cell outputs */}
-      <div className="pl-8">
-        {cell.outputs.map((output, index) => (
-          <div key={index} className="p-2 rounded-md my-2">
-            <div className="text-sm whitespace-pre-wrap text-foreground">
-              {output.data["text/plain"]}
+      <div className="flex pl-8 max-h-96">
+        <ScrollArea className="grow">
+          {cell.outputs.map((output, index) => (
+            <div key={index} className="p-2 rounded-md my-2">
+              <div className="text-sm whitespace-pre-wrap text-foreground">
+                {output.data["text/plain"]}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </ScrollArea>
       </div>
 
     </div>
