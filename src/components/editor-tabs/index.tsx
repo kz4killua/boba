@@ -21,7 +21,7 @@ export function EditorTabs() {
             const notebook = notebooks.find(notebook => notebook.id === id);
             if (!notebook) return null;
             return (
-              <Tab key={id} notebook={notebook} />
+              <EditorTab key={id} notebook={notebook} />
             )
           })
         }
@@ -32,7 +32,7 @@ export function EditorTabs() {
 }
 
 
-function Tab({
+function EditorTab({
   notebook
 } : {
   notebook: Notebook

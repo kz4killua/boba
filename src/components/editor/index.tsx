@@ -69,22 +69,22 @@ export function Editor() {
   return (
     <ScrollArea>
       <div className="px-3 pt-2 pb-12">
-        <CellInsertion index={0} />
+        <EditorCellInsertion index={0} />
         {
           notebook.cells.map((cell, index) => (
-            // Forcing re-rendering on reorders (index changes) fixes disposal conflicts
+            // Forcing re-rendering on reorders (index changes) fixes monaco's disposal conflicts
             <React.Fragment key={`${cell.id}-${index}`}>
               {cell.cell_type === "code" ? (
-                <CodeCellView 
+                <EditorCodeCell 
                   notebook={notebook} 
                   cell={cell} 
                   index={index} 
                   runtime={runtime}
                 />
               ) : (
-                <MarkdownCellView />
+                <EditorMarkdownCell />
               )}
-              <CellInsertion index={index + 1} />
+              <EditorCellInsertion index={index + 1} />
             </React.Fragment>
           ))
         }
@@ -93,7 +93,7 @@ export function Editor() {
   )
 }
 
-function CodeCellView({
+function EditorCodeCell({
   notebook,
   cell,
   index,
@@ -168,28 +168,26 @@ function CodeCellView({
     // Normalize line endings to LF
     source = source.replace(/\r\n/g, "\n");
 
-    // Parse the code
-    console.log("Parsing:", JSON.stringify(source));
+    // Parse the code and generate an AST
     try {
       parser.reset();
       parser.feed(source);
     } catch (error) {
       console.error(error);
       updateResult({ error: `ParserError: Please check your code for syntax errors.` });
+      setRunning(false);
       return;
     }
 
-    // Get the AST
     if (parser.results.length === 0) {
       updateResult({ result: "" });
+      setRunning(false);
       return;
     }
     const ast = parser.results[0];
-    console.log("AST:", ast);
 
-    // Generate the code
+    // Generate the code from the AST
     const code = escodegen.generate(ast);
-    console.log("Code:", code);
 
     // Execute the code
     runtime.execute(code).then((result) => {
@@ -284,12 +282,12 @@ function CodeCellView({
 }
 
 
-function MarkdownCellView() {
-  // TODO
+function EditorMarkdownCell() {
+  // TODO: At some point, consider adding support for markdown cells
   return null;
 }
 
-function CellInsertion({
+function EditorCellInsertion({
   index
 } : {
   index: number
