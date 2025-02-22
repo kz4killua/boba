@@ -346,13 +346,16 @@ function BaseEditor({
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
 
-  function calculateHeight(content: string) {
-    const lines = Math.max(1, content.split('\n').length);
-    return paddingTop + paddingBottom + lineHeight * lines;
-  }
-
   function handleMount(editor: monaco.editor.IStandaloneCodeEditor) {
     editorRef.current = editor;
+    // See: (Adapted) https://github.com/microsoft/monaco-editor/issues/794
+    editor.onDidContentSizeChange(() => {
+      const contentHeight = editor.getContentHeight();
+      if (containerRef.current) {
+        containerRef.current.style.height = `${contentHeight}px`;
+      }
+      editor.layout();
+    })
   }
 
   useEffect(() => {
@@ -398,7 +401,6 @@ function BaseEditor({
           overviewRulerLanes: 0,
           lineNumbers: "off",
         }}
-        height={calculateHeight(source)}
         onChange={onChange}
         onMount={handleMount}
         defaultLanguage={type === "code" ? languageId : "markdown"}
