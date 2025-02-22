@@ -13,7 +13,8 @@ export function EditorTabs() {
   const { notebooks, open } = useNotebooks();
 
   return (
-    <ScrollArea>
+    // NOTE: 'overflow-visible' fixes an issue causing editor tabs to vertically scroll with lots of code cells
+    <ScrollArea className='overflow-visible'>
       <div className="flex gap-2 py-2 px-3">
         {
           open.map(id => {
