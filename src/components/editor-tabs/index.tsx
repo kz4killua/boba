@@ -79,7 +79,7 @@ function EditorTab({
       )}
       onClick={handleClick}
     >
-      <FileCodeIcon size={16} className="shrink-0" />
+      <FileCodeIcon size={16} className="stroke-primary shrink-0" />
       <span className='whitespace-nowrap'>{notebook.name}</span>
       <div className={clsx(
         active === notebook.id ? "visible" : "group-hover:visible invisible",

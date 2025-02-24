@@ -7,6 +7,6 @@ export function Logo({
   size?: number
 }) {
   return (
-    <CircleIcon size={size} />
+    <CircleIcon className="fill-primary stroke-primary" size={size} />
   )
 }

@@ -10,7 +10,7 @@ export function TitleBar() {
   return (
     <header className="bg-background flex items-center justify-between p-3">
       <div className="flex items-center gap-3 font-medium">
-        <Logo size={16} /> Boba
+        <Logo size={16} /> Soodo
       </div>
       <div>
         <ExplorerToggle />

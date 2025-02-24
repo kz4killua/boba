@@ -94,7 +94,7 @@ function NewFile({
 
   return (
     <div className="px-3 py-2 rounded-md flex items-center gap-2 hover:bg-muted cursor-pointer">
-      <FileCodeIcon size={16} className="shrink-0" />
+      <FileCodeIcon size={16} className="stroke-primary shrink-0" />
       <FileNameInput onSuccess={onSuccess} onExit={onExit} />
     </div>
   )
@@ -147,7 +147,7 @@ function File({
       onClick={handleOpen}
     >
       <div className="flex items-center gap-2">
-        <FileCodeIcon size={16} className="shrink-0" /> 
+        <FileCodeIcon size={16} className="stroke-primary shrink-0" /> 
         {
           renaming ? (
             <FileNameInput

@@ -9,8 +9,8 @@ import Script from 'next/script';
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Boba - The (English) Programming Language",
-  description: "Programming doesn't have to be hard. Boba is a simple, easy-to-learn programming language that's perfect for beginners.",
+  title: "Soodo | Code in Pseudocode",
+  description: "Soodo | Code in Pseudocode",
 };
 
 export default function RootLayout({
